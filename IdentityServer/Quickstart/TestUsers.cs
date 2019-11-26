@@ -37,19 +37,6 @@ namespace IdentityServer
                     new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json),
                     new Claim("location", "somewhere")
                 }
-            },
-            new TestUser{SubjectId = "58988", Username = "ZhongHai", Password = "123",ProviderSubjectId="unionid",
-                Claims =
-                {
-                    new Claim(JwtClaimTypes.Name, "ZhongHai"),
-                    new Claim(JwtClaimTypes.GivenName, "Hai"),
-                    new Claim(JwtClaimTypes.FamilyName, "Zhong"),
-                    new Claim(JwtClaimTypes.Email, "zhonghai@email.com"),
-                    new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-                    new Claim(JwtClaimTypes.WebSite, "http://hih.com"),
-                    new Claim(JwtClaimTypes.Address, @"", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json),
-                    new Claim("location", "liaoning")
-                }
             }
         };
     }
