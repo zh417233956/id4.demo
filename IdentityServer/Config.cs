@@ -63,7 +63,9 @@ namespace IdentityServer
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile
-                }
+                },
+                FrontChannelLogoutUri="http://localhost:5002/signout-oidc",
+                FrontChannelLogoutSessionRequired=true
             }
         };
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MVCClient.Models;
@@ -22,10 +23,14 @@ namespace MVCClient.Controllers
         {
             return View();
         }
-
+        [Authorize]
         public IActionResult Privacy()
         {
             return View();
+        }
+        public IActionResult Logout()
+        {
+            return SignOut("Cookies", "oidc");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
