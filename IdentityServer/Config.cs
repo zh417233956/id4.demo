@@ -10,19 +10,68 @@ namespace IdentityServer
 {
     public static class Config
     {
-        public static IEnumerable<IdentityResource> Ids =>
-            new IdentityResource[]
+        //public static IEnumerable<IdentityResource> Ids =>
+        //    new IdentityResource[]
+        //    {
+        //        new IdentityResources.OpenId(),
+        //        //添加姓名等资源授权
+        //        new IdentityResources.Profile()
+        //    };
+
+        public static List<IdentityResource> Ids =>
+            new List<IdentityResource>
             {
-                new IdentityResources.OpenId(),
-                //添加姓名等资源授权
-                new IdentityResources.Profile()
+                new IdentityResource{
+                    Name="openid",
+                    Enabled=true,
+                    Emphasize=true,
+                    Required=true,
+                    DisplayName="用户授权认证信息",
+                    Description="获取你的授权认证"
+                },
+                new IdentityResource{
+                    Name="profile",
+                    Enabled=true,
+                    Emphasize=false,
+                    Required=true,
+                    DisplayName="用户个人信息",
+                    Description="获取你的个人基本资料信息，如：姓名、性别、年龄等"
+                }
             };
 
-        public static IEnumerable<ApiResource> Apis =>
+
+        //public static IEnumerable<ApiResource> Apis =>
+        //    new List<ApiResource>
+        //{
+        //    new ApiResource("api1", "My API")
+        //};
+
+        public static List<ApiResource> Apis =>
             new List<ApiResource>
-        {
-            new ApiResource("api1", "My API")
-        };
+            {
+               //普通的通过构造函数限制 指定scope以及displayname 就行了
+             //  new ApiResource("api1","My API")
+
+               //做一些更加严格的限制要求
+               new  ApiResource(){
+                    Enabled=true,
+                    Name="api1",
+                    DisplayName="My API",
+                    Description="选择允许即同意获取My API权限",
+                    Scopes={
+                                new Scope()
+                                {
+
+                                    Emphasize=false,
+                                    Required=false,
+                                    Name="api1",
+                                    DisplayName="My API",
+                                    Description="选择允许即同意获取My API权限"
+                                }
+                          }
+
+               }
+            };
 
         public static IEnumerable<Client> Clients =>
              new List<Client>
@@ -83,8 +132,10 @@ namespace IdentityServer
 
                 AllowedScopes =
                 {
-                    IdentityServerConstants.StandardScopes.OpenId,
-                    IdentityServerConstants.StandardScopes.Profile,
+                    //IdentityServerConstants.StandardScopes.OpenId,
+                    //IdentityServerConstants.StandardScopes.Profile,
+                    "openid",
+                    "profile",
                     "api1"
                 }
             }
