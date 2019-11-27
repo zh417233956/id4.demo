@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -40,11 +41,13 @@ namespace MVCClient
                 options.Authority = "http://localhost:5000";
                 options.RequireHttpsMetadata = false;
 
-                options.ClientId = "mvc";
-                options.ClientSecret = "secret";
-                options.ResponseType = "code";
-
+                options.ClientId = "mvc1";
+                options.ClientSecret = "secret1";
+                options.ResponseType = "code id_token";
                 options.SaveTokens = true;
+                options.GetClaimsFromUserInfoEndpoint = true;
+
+                options.Scope.Add("api1");
             });
 
             #endregion AddAuthentication

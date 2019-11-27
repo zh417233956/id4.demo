@@ -66,6 +66,27 @@ namespace IdentityServer
                 },
                 FrontChannelLogoutUri="http://localhost:5002/signout-oidc",
                 FrontChannelLogoutSessionRequired=true
+            },
+            new Client
+            {
+                 ClientId = "mvc1",
+                ClientName = "MVC Client",
+                AllowedGrantTypes = GrantTypes.Hybrid,
+
+                ClientSecrets =
+                {
+                    new Secret("secret1".Sha256())
+                },
+
+                RedirectUris           = { "http://localhost:5002/signin-oidc" },
+                PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
+
+                AllowedScopes =
+                {
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
+                    "api1"
+                }
             }
         };
 

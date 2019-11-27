@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.29505.145
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityServer\IdentityServer.csproj", "{74E8231C-A8FD-4539-9C4D-148CBB763008}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCClient", "MVCClient\MVCClient.csproj", "{297C5358-C7DC-4F14-9845-001843EE2DA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVCClient", "MVCClient\MVCClient.csproj", "{297C5358-C7DC-4F14-9845-001843EE2DA9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "middleware", "middleware", "{B07BDC3F-9598-4AAF-B01C-8E7375B68222}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "oauth2.dingtalk.aspnetcore", "middleware\oauth2.dingtalk.aspnetcore\oauth2.dingtalk.aspnetcore.csproj", "{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,9 +45,24 @@ Global
 		{297C5358-C7DC-4F14-9845-001843EE2DA9}.Release|x64.Build.0 = Release|Any CPU
 		{297C5358-C7DC-4F14-9845-001843EE2DA9}.Release|x86.ActiveCfg = Release|Any CPU
 		{297C5358-C7DC-4F14-9845-001843EE2DA9}.Release|x86.Build.0 = Release|Any CPU
+		{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}.Debug|x64.Build.0 = Debug|Any CPU
+		{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}.Debug|x86.Build.0 = Debug|Any CPU
+		{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}.Release|x64.ActiveCfg = Release|Any CPU
+		{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}.Release|x64.Build.0 = Release|Any CPU
+		{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}.Release|x86.ActiveCfg = Release|Any CPU
+		{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{71DC90C9-6FB8-4B91-A1A5-33D3A375E606} = {B07BDC3F-9598-4AAF-B01C-8E7375B68222}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E3987218-1B11-4204-BF86-1DC7961BD963}
