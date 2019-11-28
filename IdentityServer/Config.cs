@@ -82,22 +82,9 @@ namespace IdentityServer
         public static IEnumerable<Client> Clients =>
              new List<Client>
         {
-            new Client
-            {
-                ClientId = "client",
-
-                // no interactive user, use the clientid/secret for authentication
-                AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-                // secret for authentication
-                ClientSecrets =
-                {
-                    new Secret("secret".Sha256())
-                },
-
-                // scopes that client has access to
-                AllowedScopes = { "api1" }
-            },
+            ClientCredentialsClient,
+            ResourceOwnerPasswordClient,
+            JsClient,
              // interactive ASP.NET Core MVC client
             new Client
             {
@@ -147,5 +134,118 @@ namespace IdentityServer
             }
         };
 
+        private static Client ClientCredentialsClient => new Client
+        {
+            // 客户端模式
+            /*
+             * 客户端请求type:client_credentials
+             * http://localhost:5000/connect/token 
+             * post
+             * data:
+             * {
+                    grant_type:client_credentials
+                    client_id:client
+                    client_secret:secret
+                }
+                response:
+                {
+                    "access_token": "access_token",
+                    "expires_in": 3600,
+                    "token_type": "Bearer",
+                    "scope": "api1"
+                }
+             * 客户端鉴权
+             * 第一次从http://localhost:5000获取加密秘钥，然后进行验签
+            services.AddAuthentication("Bearer")
+            .AddJwtBearer("Bearer", options =>
+            {
+                options.Authority = "http://localhost:5000";
+                options.RequireHttpsMetadata = false;
+                options.Audience = "api1";
+            }); 
+             */
+            ClientId = "client",
+
+            // no interactive user, use the clientid/secret for authentication
+            AllowedGrantTypes = GrantTypes.ClientCredentials,
+
+            // secret for authentication
+            ClientSecrets =
+                {
+                    new Secret("secret".Sha256())
+                },
+
+            // scopes that client has access to
+            AllowedScopes = { "api1" }
+        };
+        private static Client ResourceOwnerPasswordClient => new Client
+        {
+            //资源所有者密码授权模式
+            /*
+            * 客户端请求type:client_credentials
+            * http://localhost:5000/connect/token 
+            * post
+            * data:
+            * {
+                   grant_type:password
+                   client_id:client1
+                   client_secret:secret
+                   username:bob
+                   password:bob
+               }
+               response:
+               {
+                   "access_token": "access_token",
+                   "expires_in": 3600,
+                   "token_type": "Bearer",
+                   "scope": "api1"
+               }
+             */
+            ClientId = "client1",
+            AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+
+            ClientSecrets =
+                           {
+                               new Secret("secret".Sha256())
+                           },
+            AllowedScopes = { "api1" }
+        };
+
+        
+        private static Client JsClient
+        {
+            //OpenID Connect 简化模式（implicit）
+
+            get
+            {
+                const string host = "http://localhost:5002";
+                return new Client
+                {
+                    
+                    ClientId = "clientjs",
+                    ClientName = "JS Client",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+
+                    RedirectUris =
+                    {
+                        $"{host}/client/oidc/login-callback.html",
+                        $"{host}/client/oidc/refresh-token.html"
+                    },
+                    PostLogoutRedirectUris = { $"{host}/client/index.html" },
+
+                    AllowedCorsOrigins = { host },
+                    AllowedScopes =
+                    {
+                        "openid",
+                        "profile",
+                        "info",
+                        "api1"
+                    },
+                    AccessTokenLifetime = 3600,
+                    AllowAccessTokensViaBrowser = true,
+                    RequireConsent = false,
+                };
+            }
+        }
     }
 }

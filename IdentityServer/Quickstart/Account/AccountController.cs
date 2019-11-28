@@ -360,5 +360,15 @@ namespace IdentityServer
 
             return vm;
         }
+        [HttpGet]
+        public ActionResult js()
+        {
+
+            var isLogin = base.User?.Identity?.IsAuthenticated ?? false;
+            var javaScript = "var account={"
+                           + "is_login:" + isLogin.ToString().ToLower()
+                           + "};";
+            return Content(javaScript, "application/javascript");
+        }
     }
 }
