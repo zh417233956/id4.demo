@@ -24,7 +24,8 @@ namespace MVCClient.Controllers
             return View();
         }
         //[Authorize(Roles = "admin")]
-        [Authorize(Policy = "dingtalk")]
+        //[Authorize(Policy = "dingtalk")]
+        [Authorize(Policy = "customs")]
         public IActionResult Privacy()
         {
             return View();

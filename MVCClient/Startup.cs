@@ -4,11 +4,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MVCClient.Auths;
 
 namespace MVCClient
 {
@@ -64,7 +66,14 @@ namespace MVCClient
                 {
                     builder.RequireClaim("idp", "dingtalk");
                 });
+                option.AddPolicy("customs", builder =>
+                {
+                    //自定义Policy
+                    builder.AddRequirements(new CustomsAuthorizationRequirement());
+                });
             });
+            //注入自定义Policy
+            services.AddSingleton<IAuthorizationHandler, CustomsAuthorizationHandler>();
 
             #endregion AddAuthentication
 
