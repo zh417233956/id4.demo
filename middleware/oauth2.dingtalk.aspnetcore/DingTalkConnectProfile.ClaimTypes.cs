@@ -8,7 +8,7 @@ namespace oauth2.dingtalk.aspnetcore
     {
         public static class ClaimTypes
         {
-            public static readonly string Prefix = "dingtalk.";
+            public static readonly string Prefix = "";
 
             public static readonly string Issuer = Prefix + "issuer";
 

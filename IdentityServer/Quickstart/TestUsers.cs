@@ -35,10 +35,11 @@ namespace IdentityServer
                     new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
                     new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
                     new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json),
-                    new Claim("location", "somewhere")
+                    new Claim("location", "somewhere"),
+                    new Claim(JwtClaimTypes.Role, "user"),
                 }
             },
-            new TestUser{SubjectId = "58988", Username = "ZhongHai", Password = "123",ProviderSubjectId="unionid",
+            new TestUser{SubjectId = "58988", Username = "ZhongHai", Password = "123",
                 Claims =
                 {
                     new Claim(JwtClaimTypes.Name, "ZhongHai"),
@@ -48,7 +49,8 @@ namespace IdentityServer
                     new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
                     new Claim(JwtClaimTypes.WebSite, "http://hih.com"),
                     new Claim(JwtClaimTypes.Address, @"", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json),
-                    new Claim("location", "liaoning")
+                    new Claim("userid", "58988"),
+                    new Claim(JwtClaimTypes.Role, "admin"),
                 }
             }
         };

@@ -47,7 +47,14 @@ namespace MVCClient
                 options.SaveTokens = true;
                 options.GetClaimsFromUserInfoEndpoint = true;
 
-                options.Scope.Add("api1");
+                options.Scope.Add("info");
+
+                options.ClaimActions.MapAll();
+                //基于claim的鉴权
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    RoleClaimType="role"
+                };
             });
 
             #endregion AddAuthentication

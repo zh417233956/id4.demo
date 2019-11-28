@@ -36,7 +36,12 @@ namespace IdentityServer
                     Required=true,
                     DisplayName="用户个人信息",
                     Description="获取你的个人基本资料信息，如：姓名、性别、年龄等"
-                }
+                },
+                new IdentityResource(
+                   name: "custom",
+                   displayName: "custom profile",
+                   claimTypes: new[] { IdentityModel.JwtClaimTypes.Name}),
+                 new IdentityResource("info", "userinfo", new List<string>(){"role","name","userid","openid","unionid","nickname"}),
             };
 
 
@@ -50,7 +55,8 @@ namespace IdentityServer
             new List<ApiResource>
             {
                //普通的通过构造函数限制 指定scope以及displayname 就行了
-             //  new ApiResource("api1","My API")
+               //new ApiResource("api1","My API",new List<string>(){ "email"}),
+               //new ApiResource("api1", "My API",new List<string>(){ IdentityModel.JwtClaimTypes.Email})
 
                //做一些更加严格的限制要求
                new  ApiResource(){
@@ -66,10 +72,10 @@ namespace IdentityServer
                                     Required=false,
                                     Name="api1",
                                     DisplayName="My API",
-                                    Description="选择允许即同意获取My API权限"
+                                    Description="选择允许即同意获取My API权限",
+                                    UserClaims=new List<string>() { "email" }
                                 }
                           }
-
                }
             };
 
@@ -120,8 +126,8 @@ namespace IdentityServer
             {
                  ClientId = "mvc1",
                 ClientName = "MVC Client",
-                AllowedGrantTypes = GrantTypes.Hybrid,
-
+                //AllowedGrantTypes = GrantTypes.Hybrid,
+                AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
                 ClientSecrets =
                 {
                     new Secret("secret1".Sha256())
@@ -136,7 +142,7 @@ namespace IdentityServer
                     //IdentityServerConstants.StandardScopes.Profile,
                     "openid",
                     "profile",
-                    "api1"
+                    "info"
                 }
             }
         };
