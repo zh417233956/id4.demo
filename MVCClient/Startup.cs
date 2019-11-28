@@ -35,7 +35,10 @@ namespace MVCClient
                 options.DefaultScheme = "Cookies";
                 options.DefaultChallengeScheme = "oidc";
             })
-            .AddCookie("Cookies")
+            .AddCookie("Cookies",options=> {
+                //Authorize 未通过提示页
+                options.AccessDeniedPath = "/Home/AccessDenied";
+            })
             .AddOpenIdConnect("oidc", options =>
             {
                 options.Authority = "http://localhost:5000";

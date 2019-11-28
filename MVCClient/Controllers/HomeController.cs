@@ -29,6 +29,10 @@ namespace MVCClient.Controllers
         {
             return View();
         }
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
         public IActionResult Logout()
         {
             return SignOut("Cookies", "oidc");
