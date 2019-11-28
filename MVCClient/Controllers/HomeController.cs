@@ -23,7 +23,8 @@ namespace MVCClient.Controllers
         {
             return View();
         }
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
+        [Authorize(Policy = "dingtalk")]
         public IActionResult Privacy()
         {
             return View();

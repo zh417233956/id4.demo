@@ -56,6 +56,12 @@ namespace MVCClient
                     RoleClaimType="role"
                 };
             });
+            services.AddAuthorization(option => {
+                option.AddPolicy("dingtalk", builder =>
+                {
+                    builder.RequireClaim("idp", "dingtalk");
+                });
+            });
 
             #endregion AddAuthentication
 
