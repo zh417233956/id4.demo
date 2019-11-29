@@ -29,6 +29,7 @@ namespace IdentityServer
 
         public IActionResult Index()
         {
+            return View();
             if (_environment.IsDevelopment())
             {
                 // only show in development
