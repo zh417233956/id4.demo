@@ -40,7 +40,6 @@ namespace IdentityServer
 
             // not recommended for production - you need to store your key material somewhere secure
             //builder.AddDeveloperSigningCredential();
-            //var basePath = PlatformServices
             builder.AddSigningCredential(new X509Certificate2(Path.Combine(Environment.ContentRootPath,
                          Configuration["Certificates:Path"]), Configuration["Certificates:Password"]));
 

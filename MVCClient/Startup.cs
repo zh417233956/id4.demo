@@ -47,7 +47,7 @@ namespace MVCClient
                 options.RequireHttpsMetadata = false;
 
                 options.ClientId = "mvc1";
-                options.ClientSecret = "secret1";
+                options.ClientSecret = "secret";
                 options.ResponseType = "code id_token";
                 options.SaveTokens = true;
                 options.GetClaimsFromUserInfoEndpoint = true;

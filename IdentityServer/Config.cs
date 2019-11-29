@@ -84,55 +84,35 @@ namespace IdentityServer
         {
             ClientCredentialsClient,
             ResourceOwnerPasswordClient,
-            JsClient,
-             // interactive ASP.NET Core MVC client
-            new Client
-            {
-                ClientId = "mvc",
-                ClientSecrets = { new Secret("secret".Sha256()) },
-
-                AllowedGrantTypes = GrantTypes.Code,
-                RequireConsent = true,//是否弹出授权
-                RequirePkce = true,
-
-                // where to redirect to after login
-                RedirectUris = { "http://localhost:5001/signin-oidc","http://localhost:5002/signin-oidc" },
-
-                // where to redirect to after logout
-                PostLogoutRedirectUris = { "http://localhost:5001/signout-callback-oidc","http://localhost:5002/signout-callback-oidc" },
-
-                AllowedScopes = new List<string>
-                {
-                    IdentityServerConstants.StandardScopes.OpenId,
-                    IdentityServerConstants.StandardScopes.Profile
-                },
-                FrontChannelLogoutUri="http://localhost:5002/signout-oidc",
-                FrontChannelLogoutSessionRequired=true
-            },
-            new Client
-            {
-                 ClientId = "mvc1",
-                ClientName = "MVC Client",
-                //AllowedGrantTypes = GrantTypes.Hybrid,
-                AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
-                ClientSecrets =
-                {
-                    new Secret("secret1".Sha256())
-                },
-
-                RedirectUris           = { "http://localhost:5002/signin-oidc" },
-                PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
-
-                AllowedScopes =
-                {
-                    //IdentityServerConstants.StandardScopes.OpenId,
-                    //IdentityServerConstants.StandardScopes.Profile,
-                    "openid",
-                    "profile",
-                    "info"
-                }
-            }
+            AuthorizationCodeClient,
+            ImplicitClient,
+            HybridClient,
+            JsClient            
         };
+
+        /*
+         * 
+         * （1）客户端模式（AllowedGrantTypes = GrantTypes.ClientCredentials）
+         * 这是一种最简单的授权方式，应用于服务于服务之间的通信，token通常代表的是客户端的请求，而不是用户。
+         * 用这种授权类型，会向token endpoint发送token请求，并获得代表客户机的access token。客户端通常必须使用token endpoint的Client ID和secret进行身份验证。
+         * 适用场景：用于和用户无关，服务与服务之间直接交互访问资源
+         * 
+         * （2）密码模式（ClientAllowedGrantTypes = GrantTypes.ResourceOwnerPassword）
+         * 该方式发送用户名和密码到token endpoint，向资源服务器请求令牌。这是一种“非交互式”授权方法。
+         * 官网上称，为了解决一些历史遗留的应用场景，所以保留了这种授权方式，但不建议使用。
+         * 适用场景：用于当前的APP是专门为服务端设计的情况。
+         * 
+         * （3）混合模式和客户端模式（ClientAllowedGrantTypes =GrantTypes.HybridAndClientCredentials）
+            ClientCredentials授权方式在第一种应用场景已经介绍了，这里主要介绍Hybrid授权方式。Hybrid是由Implicit和Authorization code结合起来的一种授权方式。其中Implicit用于身份认证，ID token被传输到浏览器并在浏览器进行验证；而Authorization code使用反向通道检索token和刷新token。
+            推荐使用Hybrid模式。
+            适用场景：用于MVC框架，服务器端 Web 应用程序和原生桌面/移动应用程序。
+         * 
+         * （4）简化模式（ClientAllowedGrantTypes =GrantTypes.Implicit）
+            Implicit要么仅用于服务端和JavaScript应用程序端进行身份认证，要么用于身份身份验证和access token的传输。
+            在Implicit中，所有token都通过浏览器传输的。
+            适用场景：JavaScript应用程序。
+         * 
+         */
 
         private static Client ClientCredentialsClient => new Client
         {
@@ -178,6 +158,7 @@ namespace IdentityServer
             // scopes that client has access to
             AllowedScopes = { "api1" }
         };
+
         private static Client ResourceOwnerPasswordClient => new Client
         {
             //资源所有者密码授权模式
@@ -211,7 +192,105 @@ namespace IdentityServer
             AllowedScopes = { "api1" }
         };
 
-        
+        private static Client ImplicitClient
+        {
+            get
+            {
+                const string home = "http://localhost:5003";
+                const string OidcLoginCallback = "/signin-oidc";
+                const string OidcFrontChannelLogoutCallback = "/oidc/front-channel-logout-callback";
+
+                return new Client
+                {
+                    ClientId = "implicit",
+                    ClientName = "Implicit Client",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+
+                    RequireConsent = false,
+
+                    RedirectUris = { home + OidcLoginCallback },
+                    PostLogoutRedirectUris = { home },
+
+                    AllowedScopes =
+                    {
+                        "openid",
+                        "profile",
+                        "info"
+                    },
+
+                    FrontChannelLogoutUri = home + OidcFrontChannelLogoutCallback,
+                    FrontChannelLogoutSessionRequired = true
+                };
+            }
+        }
+
+        private static Client AuthorizationCodeClient
+        {
+            get
+            {
+                return new Client
+                {
+                    ClientId = "mvc",
+                    ClientName = "Oidc Authorization Code Client",
+                    ClientSecrets = { new Secret("secret".Sha256()) },
+
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequireConsent = true,//是否弹出授权
+                    RequirePkce = true,
+
+                    // where to redirect to after login
+                    RedirectUris = { "http://localhost:5001/signin-oidc", "http://localhost:5002/signin-oidc" },
+
+                    // where to redirect to after logout
+                    PostLogoutRedirectUris = { "http://localhost:5001/signout-callback-oidc", "http://localhost:5002/signout-callback-oidc" },
+
+                    AllowedScopes = new List<string>
+                {
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile
+                },
+                    FrontChannelLogoutUri = "http://localhost:5002/signout-oidc",
+                    FrontChannelLogoutSessionRequired = true
+                };
+            }
+        }
+
+        private static Client HybridClient
+        {
+            get
+            {
+                const string home = "http://localhost:5002";
+                const string OidcLoginCallback = "/signin-oidc";
+                const string OidcSignoutCallback = "/signout-callback-oidc";
+                const string OidcFrontChannelLogoutCallback = "/oidc/front-channel-logout-callback";
+                return new Client
+                {
+                    ClientId = "mvc1",
+                    ClientName = "Hybrid Client",
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    ClientSecrets = new List<Secret>
+                    {
+                        new Secret("secret".Sha256())
+                    },
+
+                    RequireConsent = false,
+
+                    RedirectUris = { home + OidcLoginCallback },
+                    PostLogoutRedirectUris = { home + OidcSignoutCallback },
+
+                    AllowedScopes =
+                    {
+                        "openid",
+                        "profile",
+                        "info"
+                    },
+
+                    FrontChannelLogoutUri = home + OidcFrontChannelLogoutCallback,
+                    FrontChannelLogoutSessionRequired = true
+                };
+            }
+        }
+
         private static Client JsClient
         {
             //OpenID Connect 简化模式（implicit）
@@ -221,7 +300,7 @@ namespace IdentityServer
                 const string host = "http://localhost:5002";
                 return new Client
                 {
-                    
+
                     ClientId = "clientjs",
                     ClientName = "JS Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
