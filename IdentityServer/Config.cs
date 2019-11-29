@@ -354,11 +354,11 @@ namespace IdentityServer
 
                     for (int j = 0; j < OidcLoginCallback.Count; j++)
                     {
-                        OidcLoginCallback[i] = home + OidcLoginCallback[i];
+                        OidcLoginCallback[j] = home + OidcLoginCallback[j];
                     }
                     for (int j = 0; j < OidcSignoutCallback.Count; j++)
                     {
-                        OidcSignoutCallback[i] = home + OidcSignoutCallback[i];
+                        OidcSignoutCallback[j] = home + OidcSignoutCallback[j];
                     }
 
                     var OidcFrontChannelLogoutCallback = config[configKeyPre + "OidcFrontChannelLogoutCallback"];
@@ -378,13 +378,20 @@ namespace IdentityServer
                         RedirectUris = OidcLoginCallback,
                         PostLogoutRedirectUris = OidcSignoutCallback,
 
-                        AllowedScopes = config[configKeyPre + "Scopes"].Split(',').ToList()
+                        AllowedScopes = config[configKeyPre + "Scopes"].Split(',').ToList(),
+
+                        AccessTokenLifetime = Convert.ToInt32(config[configKeyPre + "AccessTokenLifetime"]),
 
                     };
                     if (config[configKeyPre + "FrontChannelLogoutSessionRequired"] == "True")
                     {
                         client.FrontChannelLogoutUri = home + OidcFrontChannelLogoutCallback;
                         client.FrontChannelLogoutSessionRequired = true;
+                    }
+                    if (client.AllowedGrantTypes.Contains("implicit"))
+                    {
+                        client.AllowedCorsOrigins = home.Split(',').ToList();
+                        client.AllowAccessTokensViaBrowser = true;
                     }
 
                     result.Add(client);

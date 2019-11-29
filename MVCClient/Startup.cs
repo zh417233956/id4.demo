@@ -43,16 +43,20 @@ namespace MVCClient
             })
             .AddOpenIdConnect("oidc", options =>
             {
-                options.Authority = "http://localhost:5000";
+                //"http://localhost:5000";
+                options.Authority = Configuration["Id4:Authority"];
                 options.RequireHttpsMetadata = false;
 
-                options.ClientId = "mvc1";
-                options.ClientSecret = "secret";
-                options.ResponseType = "code id_token";
+                options.ClientId = Configuration["Id4:ClientId"];
+                options.ClientSecret = Configuration["Id4:Secret"];
+                options.ResponseType = Configuration["Id4:ResponseType"];
                 options.SaveTokens = true;
                 options.GetClaimsFromUserInfoEndpoint = true;
 
-                options.Scope.Add("info");
+                foreach (var item in Configuration["Id4:Scope"].Split(',').ToList())
+                {
+                    options.Scope.Add(item);
+                }
 
                 options.ClaimActions.MapAll();
                 //基于claim的鉴权
