@@ -4,7 +4,9 @@
 
 using IdentityServer4;
 using IdentityServer4.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace IdentityServer
 {
@@ -73,7 +75,7 @@ namespace IdentityServer
                                     Name="api1",
                                     DisplayName="My API",
                                     Description="选择允许即同意获取My API权限",
-                                    UserClaims=new List<string>() { "email" }
+                                    UserClaims=new List<string>() { "role", "userid" }
                                 }
                           }
                }
@@ -87,7 +89,7 @@ namespace IdentityServer
             AuthorizationCodeClient,
             ImplicitClient,
             HybridClient,
-            JsClient            
+            JsClient
         };
 
         /*
@@ -324,6 +326,71 @@ namespace IdentityServer
                     AllowAccessTokensViaBrowser = true,
                     RequireConsent = false,
                 };
+            }
+        }
+
+
+        public static IEnumerable<Client> CusClients
+        {
+            get
+            {
+                var result = new List<Client>{
+                    ClientCredentialsClient,
+                    ResourceOwnerPasswordClient,
+                    AuthorizationCodeClient,
+                    ImplicitClient,
+                    //HybridClient,
+                    //JsClient
+                };
+                var config = Startup.Configuration;
+                var Total = int.Parse(config["Id4:Total"]);
+
+                for (int i = 0; i < Total; i++)
+                {
+                    string configKeyPre = $"Id4:Clients:{i}:";
+                    string home = config[configKeyPre + "Host"];
+                    var OidcLoginCallback = config[configKeyPre + "OidcLoginCallback"].Split(',').ToList();                   
+                    var OidcSignoutCallback = config[configKeyPre + "OidcSignoutCallback"].Split(',').ToList();
+
+                    for (int j = 0; j < OidcLoginCallback.Count; j++)
+                    {
+                        OidcLoginCallback[i] = home + OidcLoginCallback[i];
+                    }
+                    for (int j = 0; j < OidcSignoutCallback.Count; j++)
+                    {
+                        OidcSignoutCallback[i] = home + OidcSignoutCallback[i];
+                    }
+
+                    var OidcFrontChannelLogoutCallback = config[configKeyPre + "OidcFrontChannelLogoutCallback"];
+
+                    var client = new Client
+                    {
+                        ClientId = config[configKeyPre + "ClientId"],
+                        ClientName = config[configKeyPre + "ClientName"],
+                        AllowedGrantTypes = config[configKeyPre + "GrantTypes"].Split(',').ToList(),
+                        ClientSecrets = new List<Secret>
+                        {
+                            new Secret(config[configKeyPre + "Secret"].Sha256())
+                        },
+
+                        RequireConsent = Convert.ToBoolean(config[configKeyPre + "RequireConsent"]),
+
+                        RedirectUris = OidcLoginCallback,
+                        PostLogoutRedirectUris = OidcSignoutCallback,
+
+                        AllowedScopes = config[configKeyPre + "Scopes"].Split(',').ToList()
+
+                    };
+                    if (config[configKeyPre + "FrontChannelLogoutSessionRequired"] == "True")
+                    {
+                        client.FrontChannelLogoutUri = home + OidcFrontChannelLogoutCallback;
+                        client.FrontChannelLogoutSessionRequired = true;
+                    }
+
+                    result.Add(client);
+                }
+
+                return result;
             }
         }
     }

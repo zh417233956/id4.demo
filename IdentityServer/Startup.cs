@@ -17,7 +17,7 @@ namespace IdentityServer
     public class Startup
     {
         public IWebHostEnvironment Environment { get; }
-        public IConfiguration Configuration { get; }
+        public static IConfiguration Configuration { get; set; }
         public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
             Environment = environment;
@@ -35,7 +35,7 @@ namespace IdentityServer
             var builder = services.AddIdentityServer()
                 .AddInMemoryIdentityResources(Config.Ids)
                 .AddInMemoryApiResources(Config.Apis)
-                .AddInMemoryClients(Config.Clients)
+                .AddInMemoryClients(Config.CusClients)
                 .AddTestUsers(TestUsers.Users);
 
             // not recommended for production - you need to store your key material somewhere secure
