@@ -16,4 +16,10 @@
   <ItemGroup>
     <ProjectReference Include="..\middleware\oauth2.dingtalk.aspnetcore\oauth2.dingtalk.aspnetcore.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="cert\idsrv4.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

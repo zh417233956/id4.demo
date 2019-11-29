@@ -5,18 +5,23 @@
 using IdentityServer.Oauth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.DotNet.PlatformAbstractions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
 
 namespace IdentityServer
 {
     public class Startup
     {
         public IWebHostEnvironment Environment { get; }
-
-        public Startup(IWebHostEnvironment environment)
+        public IConfiguration Configuration { get; }
+        public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
             Environment = environment;
+            Configuration = configuration;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -34,7 +39,11 @@ namespace IdentityServer
                 .AddTestUsers(TestUsers.Users);
 
             // not recommended for production - you need to store your key material somewhere secure
-            builder.AddDeveloperSigningCredential();
+            //builder.AddDeveloperSigningCredential();
+            //var basePath = PlatformServices
+            builder.AddSigningCredential(new X509Certificate2(Path.Combine(Environment.ContentRootPath,
+                         Configuration["Certificates:Path"]), Configuration["Certificates:Password"]));
+
         }
 
         public void Configure(IApplicationBuilder app)
