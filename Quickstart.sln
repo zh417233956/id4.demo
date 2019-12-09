@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVCClient", "MVCClient\MVCC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "middleware", "middleware", "{B07BDC3F-9598-4AAF-B01C-8E7375B68222}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "oauth2.dingtalk.aspnetcore", "middleware\oauth2.dingtalk.aspnetcore\oauth2.dingtalk.aspnetcore.csproj", "{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "oauth2.dingtalk.aspnetcore", "middleware\oauth2.dingtalk.aspnetcore\oauth2.dingtalk.aspnetcore.csproj", "{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{1B1C489F-B38D-464C-8A97-381A11388477}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,18 @@ Global
 		{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}.Release|x64.Build.0 = Release|Any CPU
 		{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}.Release|x86.ActiveCfg = Release|Any CPU
 		{71DC90C9-6FB8-4B91-A1A5-33D3A375E606}.Release|x86.Build.0 = Release|Any CPU
+		{1B1C489F-B38D-464C-8A97-381A11388477}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B1C489F-B38D-464C-8A97-381A11388477}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B1C489F-B38D-464C-8A97-381A11388477}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1B1C489F-B38D-464C-8A97-381A11388477}.Debug|x64.Build.0 = Debug|Any CPU
+		{1B1C489F-B38D-464C-8A97-381A11388477}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1B1C489F-B38D-464C-8A97-381A11388477}.Debug|x86.Build.0 = Debug|Any CPU
+		{1B1C489F-B38D-464C-8A97-381A11388477}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B1C489F-B38D-464C-8A97-381A11388477}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B1C489F-B38D-464C-8A97-381A11388477}.Release|x64.ActiveCfg = Release|Any CPU
+		{1B1C489F-B38D-464C-8A97-381A11388477}.Release|x64.Build.0 = Release|Any CPU
+		{1B1C489F-B38D-464C-8A97-381A11388477}.Release|x86.ActiveCfg = Release|Any CPU
+		{1B1C489F-B38D-464C-8A97-381A11388477}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
