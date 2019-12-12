@@ -36,19 +36,19 @@ namespace WebAPI
 
                     options.Audience = Configuration["Id4:Audience"];
 
-                   
                     //基于claim的鉴权
                     options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                     {
-                        RoleClaimType = "role",
-                        NameClaimType= "preferred_username",                        
+                        RoleClaimType = "preferred_username",
+                        NameClaimType = "given_name",
                     };
                 });
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
             //services.AddAuthorization(options => { options.AddPolicy("Users", policy => policy.RequireRole("Users")); });
 
-            services.AddAuthorization(option => {
+            services.AddAuthorization(option =>
+            {
                 option.AddPolicy("customs", builder =>
                 {
                     //自定义Policy
@@ -57,6 +57,18 @@ namespace WebAPI
             });
             //注入自定义Policy
             services.AddSingleton<IAuthorizationHandler, CustomsAuthorizationHandler>();
+
+            //配置跨域处理
+            services.AddCors(options =>
+            {
+                options.AddPolicy("any", builder =>
+                {
+                    builder.AllowAnyOrigin() //允许任何来源的主机访问
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();//指定处理cookie
+                });
+            });
         }
 
 
