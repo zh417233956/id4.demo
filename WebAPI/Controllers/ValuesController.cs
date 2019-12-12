@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("any")]
     public class ValuesController : ControllerBase
     {
         // GET api/values
         [HttpGet]
-        [Authorize]
+        [Authorize(Policy = "customs")]
         public ActionResult Get()
         {
             //return new string[] { "value1", "value2" };
@@ -23,7 +25,7 @@ namespace WebAPI.Controllers
         // GET api/values/5
         [HttpGet("{id}")]
         //[Authorize(Roles = "Users")]
-        [Authorize(Policy = "customs")]
+        [Authorize]
         public ActionResult<string> Get(int id)
         {
             return new JsonResult(from c in User.Claims select new { c.Type, c.Value });
