@@ -257,6 +257,61 @@ namespace IdentityServer
             }
         }
 
+        private static Client AuthorizationCodeClient_key
+        {
+            get
+            {
+                //    return new Client
+                //    {
+                //    //    ClientId = "keycloak_client",
+                //    //    ClientName = "Oidc Authorization Code Client",
+                //    //    ClientSecrets = { new Secret("123456".Sha256()) },
+
+                //    //    AllowedGrantTypes = GrantTypes.Code,
+                //    //    RequireConsent = true,//是否弹出授权
+                //    //    RequirePkce = true,
+
+                //    //    // where to redirect to after login
+                //    //    RedirectUris = { "http://192.168.4.144:8080/auth/realms/test/broker/oidc/endpoint"},
+
+                //    //    //// where to redirect to after logout
+                //    //    //PostLogoutRedirectUris = { "http://localhost:5001/signout-callback-oidc", "http://localhost:5002/signout-callback-oidc" },
+
+                //    //    AllowedScopes = new List<string>
+                //    //{
+                //    //    IdentityServerConstants.StandardScopes.OpenId,
+                //    //    IdentityServerConstants.StandardScopes.Profile
+                //    //},
+                //    //    //FrontChannelLogoutUri = "http://localhost:5002/signout-oidc",
+                //    //    //FrontChannelLogoutSessionRequired = true
+                //    //};
+
+
+
+
+
+                return new Client
+                {
+                    ClientId = "keycloak_client",
+                    ClientName = "JavaScript Client",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequireClientSecret = false,
+                    RequireConsent = false,
+
+                    RedirectUris = { "http://192.168.4.144:8080/auth/realms/test/broker/oidc/endpoint" },
+                    //PostLogoutRedirectUris = { "http://192.168.4.144:8080/auth/realms/test/protocol/openid-connect/logout" },
+                    AllowedCorsOrigins = { "http://192.168.4.144:8080" },
+                    FrontChannelLogoutUri = "http://192.168.4.144:8080/auth/realms/test/protocol/openid-connect/logout",
+                    FrontChannelLogoutSessionRequired = true,
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile
+                    }
+                };
+            }
+        }
+
         private static Client HybridClient
         {
             get
@@ -339,6 +394,7 @@ namespace IdentityServer
                     ResourceOwnerPasswordClient,
                     AuthorizationCodeClient,
                     ImplicitClient,
+                    AuthorizationCodeClient_key
                     //HybridClient,
                     //JsClient
                 };
@@ -349,7 +405,7 @@ namespace IdentityServer
                 {
                     string configKeyPre = $"Id4:Clients:{i}:";
                     string home = config[configKeyPre + "Host"];
-                    var OidcLoginCallback = config[configKeyPre + "OidcLoginCallback"].Split(',').ToList();                   
+                    var OidcLoginCallback = config[configKeyPre + "OidcLoginCallback"].Split(',').ToList();
                     var OidcSignoutCallback = config[configKeyPre + "OidcSignoutCallback"].Split(',').ToList();
 
                     for (int j = 0; j < OidcLoginCallback.Count; j++)
